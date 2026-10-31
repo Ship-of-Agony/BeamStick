@@ -16,9 +16,19 @@ local.properties
 .idea/modules.xml
 .idea/workspace.xml
 
-# Output-Dateien und APKs (werden separat als GitHub-Release angehängt)
+# Output-Dateien, APKs und Release-Builds
 **/build/outputs/apk/
 **/build/outputs/bundle/
+**/release/*.apk
+**/release/*.json
+**/release/*.txt
+**/app/release/
+
+# OS-spezifische Dateien (Windows / Mac)
+desktop.ini
+*.ini
+Thumbs.db
+.DS_Store
 
 # WICHTIG: Schlüssel & Keystores strikt sperren!
 *.jks
