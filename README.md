@@ -53,7 +53,7 @@ BeamStick is a streamlined, lightweight media launcher designed specifically for
 
 ### 1. Download & Install
 
-* **Direct APK:** Download the latest `BeamStick.0.1.apk` from the [Releases](https://github.com/Ship-of-Agony/BeamStick/releases) page.
+* **Direct APK:** Download the latest `BeamStick.apk` from the [Releases](https://github.com/Ship-of-Agony/BeamStick/releases) page.
 * **Obtainium:** Add `https://github.com/Ship-of-Agony/BeamStick` to your Obtainium tracker for automated update management (or click the Obtainium badge at the top).
 
 ### 2. Sideload via ADB (Optional)
@@ -104,7 +104,7 @@ adb uninstall com.example.beamsticklauncher
 
 ### License
 
-**BeamStick Launcher**  
+**BeamStick**  
 © 2026 Ship of Agony LABs
 
 This application is licensed under the **Apache License, Version 2.0** (the "License"). You may not use these files except in compliance with the License. You may obtain a copy of the License at:
