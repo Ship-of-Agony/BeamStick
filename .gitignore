@@ -25,6 +25,7 @@ local.properties
 *.keystore
 *.p12
 *.key
+/key/
 signing.properties
 
 # Project exclude paths
