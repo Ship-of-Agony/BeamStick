@@ -18,12 +18,12 @@
   </a>
 </p>
 
-# 🎬 BeamStick Launcher
+# 🎬 BeamStick Launcher (v0.2)
 
 **D-Pad-optimized Android TV & projector media bridge launcher for external storage.**  
 Developed by **Ship of Agony LABs**.
 
-BeamStick is a streamlined, lightweight media launcher designed specifically for Android TV sticks, TV boxes, and smart projectors. Instead of clunky navigation or desktop-style layouts, BeamStick delivers a zero-friction experience centered around physical directional remotes (D-Pads) and instant removable media browsing.
+BeamStick is a streamlined, lightweight media launcher designed specifically for Android TV sticks, TV boxes, and smart projectors. Instead of clunky navigation or desktop-style layouts, BeamStick delivers a zero-friction experience centered around physical directional remotes (D-Pads), instant removable media browsing, and smart hardware auto-launching.
 
 <p align="center">
   <img src="Stuff/screenshot_main.png" alt="BeamStick Launcher Interface" width="800">
@@ -33,10 +33,12 @@ BeamStick is a streamlined, lightweight media launcher designed specifically for
 
 ## ⚡ Highlights
 
-* **🎛️ D-Pad Native Focus:** Strict focus management and responsive grid navigation tailored purely for remote controls without touch input.
-* **💾 Dynamic Storage Switcher:** Automatic real-time mounting detection with localized labels for *Interner Speicher* / *Internal Storage* and dynamic USB drive enumeration.
-* **🔍 Metadata Inspector:** Quickly inspect video container properties, formats, and resolutions before launching external players.
-* **🔋 Minimal Footprint:** Optimized and shrunk via R8 / ProGuard to guarantee minimal RAM usage and rapid cold boot times on low-power TV stick chipsets.
+- **🎛️ D-Pad Native Focus:** Strict focus management and responsive grid navigation tailored purely for remote controls without touch input.
+- **🔌 Intelligent USB Autostart & Hotplug:** Launches on device boot only if a physical USB stick is actually attached (with a 5-second mounting delay). Plugging in a USB drive during runtime opens the launcher automatically.
+- **💾 Dual-Storage Switcher:** Automatic real-time detection with localized labels for *Interner Speicher* / *Internal Storage* and dynamic USB drive enumeration (`USB`, `USB 1`, etc.).
+- **🛡️ Persistent Permission Locks:** Fully compatible with Android 11 through Android 14. Binds storage and overlay permissions directly via UID to prevent unwanted re-prompt dialogs after reboot.
+- **🎬 Direct Player Integration:** Extensive package query support ensures installed third-party video players (VLC, Nova, Just Player, MX Player) open directly without redirects to the Google Play Store.
+- **📺 Native TV Leanback Banner:** Integrated 16:9 home screen tile (`banner_beamstick.png`) for seamless Android TV launcher rendering.
 
 ---
 
@@ -44,24 +46,45 @@ BeamStick is a streamlined, lightweight media launcher designed specifically for
 
 | Storage Target | Display Label | Behavior / Source |
 | :--- | :--- | :--- |
-| **Primary Storage** | `Interner Speicher` / `Internal Storage` | Primary device internal storage directory |
+| **Primary Storage** | `Interner Speicher` / `Internal Storage` | Primary device internal storage directory (`/storage/emulated/0`) |
 | **USB Media Drive(s)** | `USB` / `USB 1`, `USB 2`, ... | Dynamic removable OTG/USB drives mounted via SAF |
 
 ---
 
 ## 🚀 Installation & Setup
 
-### 1. Download & Install
+### Method 1: Automated Deployment via `BeamStick_Helper.bat` (Recommended)
 
-* **Direct APK:** Download the latest `BeamStick.apk` from the [Releases](https://github.com/Ship-of-Agony/BeamStick/releases) page.
-* **Obtainium:** Add `https://github.com/Ship-of-Agony/BeamStick` to your Obtainium tracker for automated update management (or click the Obtainium badge at the top).
+For full Android 14 compatibility (automatic autostart on USB attach, permanent full storage access without recurring prompts, and battery optimization whitelist), use the automated maintenance script:
 
-### 2. Sideload via ADB (Optional)
+1. **Download ADB Tools:** Download the BeamStick_Helper.zip repository under [BeamStick](https://github.com/Ship-of-Agony/BeamStick).
+2. **Download Latest Release:** Download the latest `BeamStick` APK from the [Releases](https://github.com/Ship-of-Agony/BeamStick/releases) page and place it into that exact same folder.
+3. **Run Script:** Ensure USB Debugging (or Network ADB) is enabled on your projector/TV stick, then double-click `BeamStick_Helper.bat`.
+   - The script auto-detects your system language (German/English).
+   - Select **Option 2** (Update) or **Option 3** (Clean Reinstall) to deploy the APK and permanently lock all permissions via kernel UID.
 
-If installing via command line, connect your device with USB Debugging enabled:
+```text
+BeamStick_Helper/
+├── adb.exe
+├── AdbWinApi.dll
+├── AdbWinUsbApi.dll
+├── BeamStick_Helper.bat
+└── BeamStick-v0.2.apk
+```
+
+### Method 2: Direct Install / Obtainium
+
+- **Direct APK:** Download the latest `BeamStick` APK from the [Releases](https://github.com/Ship-of-Agony/BeamStick/releases) page and install it using your preferred file manager.
+- **Obtainium:** Add `https://github.com/Ship-of-Agony/BeamStick` to your Obtainium tracker for automated update management (or click the Obtainium badge at the top).
+
+*Note: When installing manually without the Helper script, you may need to manually grant "All files access" via Android System Settings.*
+
+### Method 3: Manual Sideload via Command Line (Optional)
+
+If installing via standard ADB command line:
 
 ```bash
-adb install -r BeamStick.0.1.apk
+adb install -r -d BeamStick-v0.2.apk
 ```
 
 ---
@@ -70,19 +93,22 @@ adb install -r BeamStick.0.1.apk
 
 Uninstall BeamStick from your Android TV or projector device using one of the following methods:
 
-### Method 1: Android System Settings
+### Method 1: Via `BeamStick_Helper.bat` (Recommended)
+Launch `BeamStick_Helper.bat` on your PC and select **[4] Uninstall** to completely remove the application and its AppOps bindings.
+
+### Method 2: Android System Settings
 1. Open Android TV **Settings** ⚙️.
 2. Navigate to **Apps** (or **Device Preferences** → **Apps** → **See all apps**).
 3. Locate and select **BeamStick**.
 4. Click **Uninstall** and confirm.
 
-### Method 2: Via Obtainium
+### Method 3: Via Obtainium
 If managed via Obtainium:
 1. Open **Obtainium**.
 2. Select **BeamStick**.
 3. Tap the **Trash / Uninstall** icon at the top right.
 
-### Method 3: Via ADB (Command Line)
+### Method 4: Via ADB (Command Line)
 Connect your device with USB Debugging enabled and run:
 
 ```bash
@@ -93,10 +119,10 @@ adb uninstall com.example.beamsticklauncher
 
 ## 🛠️ Tech Stack & Requirements
 
-* **Minimum SDK:** 26 (Android 8.0 Oreo)
-* **Target SDK:** 35 / 36 (Android 15 / 16)
-* **Tooling:** Gradle (Kotlin DSL), Android Studio
-* **Core APIs:** Kotlin, Android Storage Access Framework (`DocumentFile`), ViewBinding, Custom Focus Listeners
+- **Minimum SDK:** 26 (Android 8.0 Oreo)
+- **Target SDK:** 35 / 36 (Android 15 / 16)
+- **Architecture:** Kotlin, Coroutines, AndroidX Leanback Support
+- **Core APIs:** Storage Access Framework (`DocumentFile`), `StatFs`, AppOps Manager
 
 ---
 
