@@ -19,6 +19,13 @@
     <string name="perm_btn_grant">Enable Now</string>
     <string name="perm_btn_later">Later</string>
 
+    <!-- Overlay / Autostart Permission Dialog -->
+    <string name="overlay_perm_title">Autostart Permission</string>
+    <string name="overlay_perm_msg">To automatically launch BeamStick when your projector boots up, please grant the \'Display over other apps\' permission.</string>
+    <string name="overlay_perm_btn_settings">Go to Settings</string>
+    <string name="overlay_perm_btn_later">Later</string>
+    <string name="overlay_perm_error_toast">Unable to open system settings.</string>
+
     <!-- Badges -->
     <string name="badge_folder">FOLDER</string>
     <string name="badge_video">VIDEO</string>

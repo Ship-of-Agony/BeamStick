@@ -1,8 +1,10 @@
 package com.example.beamsticklauncher
 
+import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.usb.UsbManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
@@ -51,11 +54,25 @@ class MainActivity : AppCompatActivity() {
         initViews()
         setupRecyclerView()
         checkAndRequestPermissions()
+
+        handleUsbIntent(intent)
     }
 
     override fun onResume() {
         super.onResume()
         refreshDrives()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleUsbIntent(intent)
+    }
+
+    private fun handleUsbIntent(intent: Intent?) {
+        if (intent?.action == UsbManager.ACTION_USB_DEVICE_ATTACHED) {
+            refreshDrives()
+        }
     }
 
     private fun initViews() {
@@ -107,7 +124,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshDrives() {
-        availableDrives = FileUtils.scanUsbDrives(this)
+        // Hier includeInternal = true uebergeben, damit der interne Speicher in der UI sichtbar bleibt
+        availableDrives = FileUtils.scanUsbDrives(this, includeInternal = true)
 
         if (availableDrives.isEmpty()) {
             activeDrive = null
@@ -121,8 +139,11 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        // Falls ein USB-Stick vorhanden ist, bevorzugt den USB-Stick als aktives Laufwerk auswaehlen
+        val preferredDrive = availableDrives.firstOrNull { it.isUsb } ?: availableDrives.first()
+
         if (activeDrive == null || availableDrives.none { it.rootDir.path == activeDrive?.rootDir?.path }) {
-            selectDrive(availableDrives.first())
+            selectDrive(preferredDrive)
         } else {
             renderDriveSelector()
             renderStorageBar()
@@ -180,7 +201,6 @@ class MainActivity : AppCompatActivity() {
                 containerDrives.addView(btn, params)
             }
 
-            // Exakte D-Pad Nachbarschaft zwischen den Tabs verketten:
             for (i in createdButtons.indices) {
                 if (i > 0) {
                     createdButtons[i].nextFocusLeftId = createdButtons[i - 1].id
@@ -234,10 +254,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkAndRequestPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (!Environment.isExternalStorageManager()) {
-                showPermissionDialog()
+        val hasStorageAccess = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Environment.isExternalStorageManager()
+        } else {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+
+        if (!hasStorageAccess) {
+            // Absicherung: Falls Android noch mountet, aber Laufwerke bereits lesbar sind, keinen Dialog erzwingen
+            val drives = FileUtils.scanUsbDrives(this, includeInternal = false)
+            if (drives.isNotEmpty() && drives.any { it.rootDir.canRead() }) {
+                return
             }
+            showPermissionDialog()
         }
     }
 

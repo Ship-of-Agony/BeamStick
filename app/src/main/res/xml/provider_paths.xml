@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <!-- Ermöglicht Zugriff auf eingehängte USB-Speichermedien -->
+    <!-- Ermoeglicht Zugriff auf USB-Sticks und OTG (/storage/...) -->
     <root-path name="root" path="." />
+    <!-- Ermoeglicht Zugriff auf den internen Speicher (/storage/emulated/0) -->
     <external-path name="external_storage" path="." />
 </paths>

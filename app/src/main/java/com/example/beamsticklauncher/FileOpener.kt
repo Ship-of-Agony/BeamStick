@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.webkit.MimeTypeMap
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -41,33 +42,36 @@ object FileOpener {
     private val RECOMMENDED_AUDIO_PLAYERS = listOf(
         AppTarget("VLC", "org.videolan.vlc", isRecommended = true),
         AppTarget("Kodi", "org.xbmc.kodi", isRecommended = true),
+        AppTarget("Poweramp", "com.maxmpz.audioplayer", isRecommended = true),
         AppTarget("Musicolet", "in.krosbits.musicolet", isRecommended = true),
         AppTarget("AIMP", "com.aimp.player", isRecommended = true)
     )
 
     private val RECOMMENDED_IMAGE_VIEWERS = listOf(
-        AppTarget("Google Photos / Galerie", "com.google.android.apps.photos", isRecommended = true),
+        AppTarget("Fotos", "com.google.android.apps.photos", isRecommended = true),
+        AppTarget("Google Fotos / Galerie", "com.google.android.apps.photos", isRecommended = true),
         AppTarget("Kodi", "org.xbmc.kodi", isRecommended = true),
         AppTarget("Simple Gallery", "com.simplemobiletools.gallery", isRecommended = true)
     )
 
     fun openFile(context: Context, file: File, settings: AppSettings) {
         val category = FileUtils.categorize(file)
-        val savedPlayer = when (category) {
+        val rawSavedPlayer = when (category) {
             MediaCategory.VIDEO -> settings.defaultVideoPlayer
             MediaCategory.AUDIO -> settings.defaultAudioPlayer
             MediaCategory.IMAGE -> settings.defaultImageViewer
             else -> AppSettings.VALUE_ALWAYS_ASK
         }
 
-        val mimeType = getMimeType(file, category)
+        val mimeType = getSpecificMimeType(file, category)
 
-        if (savedPlayer.isNotEmpty() && savedPlayer != AppSettings.VALUE_ALWAYS_ASK) {
+        if (rawSavedPlayer.isNotEmpty() && rawSavedPlayer != AppSettings.VALUE_ALWAYS_ASK) {
+            val resolvedPackage = resolvePackageName(context, rawSavedPlayer)
             try {
-                launchSpecificApp(context, file, mimeType, savedPlayer)
+                launchSpecificApp(context, file, mimeType, resolvedPackage)
                 return
             } catch (e: Exception) {
-                // Fallback, wenn zugewiesene App nicht gestartet werden kann
+                Toast.makeText(context, "Start fehlgeschlagen: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -75,11 +79,60 @@ object FileOpener {
         showPlayerChooser(context, file, mimeType, availableApps)
     }
 
-    private fun getMimeType(file: File, category: MediaCategory): String {
+    private fun resolvePackageName(context: Context, identifier: String): String {
+        if (identifier.contains(".")) {
+            return identifier
+        }
+
+        val allKnown = RECOMMENDED_VIDEO_PLAYERS + RECOMMENDED_AUDIO_PLAYERS + RECOMMENDED_IMAGE_VIEWERS
+        val matched = allKnown.firstOrNull { it.label.equals(identifier, ignoreCase = true) }
+        if (matched != null) {
+            return matched.packageName
+        }
+
+        val pm = context.packageManager
+        val installedApps = pm.getInstalledApplications(0)
+        for (app in installedApps) {
+            val label = pm.getApplicationLabel(app).toString()
+            if (label.equals(identifier, ignoreCase = true)) {
+                return app.packageName
+            }
+        }
+
+        return identifier
+    }
+
+    private fun getSpecificMimeType(file: File, category: MediaCategory): String {
+        val ext = file.extension.lowercase()
+        val mapped = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext)
+        if (!mapped.isNullOrBlank()) return mapped
+
         return when (category) {
-            MediaCategory.VIDEO -> "video/*"
-            MediaCategory.AUDIO -> "audio/*"
-            MediaCategory.IMAGE -> "image/*"
+            MediaCategory.VIDEO -> when (ext) {
+                "mkv" -> "video/x-matroska"
+                "mp4" -> "video/mp4"
+                "avi" -> "video/x-msvideo"
+                "mov" -> "video/quicktime"
+                "ts" -> "video/mp2t"
+                "webm" -> "video/webm"
+                else -> "video/*"
+            }
+            MediaCategory.AUDIO -> when (ext) {
+                "mp3" -> "audio/mpeg"
+                "flac" -> "audio/flac"
+                "wav" -> "audio/wav"
+                "ogg", "opus" -> "audio/ogg"
+                "m4a", "aac" -> "audio/mp4"
+                else -> "audio/*"
+            }
+            MediaCategory.IMAGE -> when (ext) {
+                "png" -> "image/png"
+                "jpg", "jpeg" -> "image/jpeg"
+                "webp" -> "image/webp"
+                "gif" -> "image/gif"
+                "bmp" -> "image/bmp"
+                else -> "image/*"
+            }
             else -> "*/*"
         }
     }
@@ -95,7 +148,7 @@ object FileOpener {
 
     fun getInstalledPlayersForMime(context: Context, mimeType: String): List<AppTarget> {
         val pm = context.packageManager
-        val testUri = Uri.parse("content://${context.packageName}.fileprovider/test")
+        val testUri = Uri.parse("content://${context.packageName}.provider/test")
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(testUri, mimeType)
@@ -152,17 +205,33 @@ object FileOpener {
     }
 
     fun launchSpecificApp(context: Context, file: File, mimeType: String, packageName: String) {
-        val uri: Uri = FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.fileprovider",
-            file
-        )
+        val uri: Uri = try {
+            FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider",
+                file
+            )
+        } catch (e: Exception) {
+            val builder = android.os.StrictMode.VmPolicy.Builder()
+            android.os.StrictMode.setVmPolicy(builder.build())
+            Uri.fromFile(file)
+        }
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(uri, mimeType)
             setPackage(packageName)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+
+        if (uri.scheme == "content") {
+            context.grantUriPermission(
+                packageName,
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
         }
 
         try {
@@ -170,9 +239,13 @@ object FileOpener {
         } catch (e: Exception) {
             val launchIntent = context.packageManager.getLaunchIntentForPackage(packageName)
             if (launchIntent != null) {
+                launchIntent.action = Intent.ACTION_VIEW
                 launchIntent.setDataAndType(uri, mimeType)
                 launchIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                if (uri.scheme == "content") {
+                    context.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
                 context.startActivity(launchIntent)
             } else {
                 throw e

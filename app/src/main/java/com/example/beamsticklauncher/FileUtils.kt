@@ -18,7 +18,8 @@ data class UsbDrive(
     val label: String,
     val rootDir: File,
     val totalBytes: Long,
-    val freeBytes: Long
+    val freeBytes: Long,
+    val isUsb: Boolean = true
 ) {
     val percentUsed: Int
         get() = if (totalBytes > 0L) {
@@ -34,14 +35,26 @@ data class UsbDrive(
 
 object FileUtils {
 
-    fun scanUsbDrives(context: Context): List<UsbDrive> {
+    /**
+     * Prüft ausschließlich auf echte, physisch eingesteckte USB- / Wechselspeicherlaufwerke.
+     * Liefert eine leere Liste zurück, wenn kein USB-Stick am Beamer angeschlossen ist.
+     */
+    fun hasActiveUsbDrive(context: Context): Boolean {
+        return scanUsbDrives(context, includeInternal = false).isNotEmpty()
+    }
+
+    /**
+     * Scannt nach Speichermedien.
+     * @param includeInternal Wenn false, wird interner emulierter Flash (/storage/emulated/0) komplett ignoriert.
+     */
+    fun scanUsbDrives(context: Context, includeInternal: Boolean = false): List<UsbDrive> {
         val drives = mutableListOf<UsbDrive>()
         val foundPaths = mutableSetOf<String>()
 
         val internalLabel = context.getString(R.string.storage_internal)
         val usbDefaultLabel = context.getString(R.string.storage_usb)
 
-        // 1. Android-Standard über ContextCompat (erfasst SD-Karten und USB-Volumes)
+        // 1. Android-Standard über ContextCompat (erfasst SD-Karten und echte USB-OTG Volumes)
         val externalDirs = ContextCompat.getExternalFilesDirs(context, null)
 
         for (dir in externalDirs) {
@@ -60,18 +73,24 @@ object FileUtils {
             val root = getRootOfStorage(dir)
             if (root != null && root.exists() && root.canRead()) {
                 val canonical = root.canonicalPath
+                val isInternal = !isRemovable || canonical.contains("emulated", ignoreCase = true)
+
+                // Internen Speicher überspringen, wenn reine USB-Erkennung gefordert ist
+                if (isInternal && !includeInternal) {
+                    continue
+                }
+
                 if (foundPaths.add(canonical)) {
                     val stats = getStorageStats(root)
                     if (stats.first > 0L) {
-                        val isInternal = !isRemovable || canonical.contains("emulated", ignoreCase = true)
                         val label = if (isInternal) internalLabel else usbDefaultLabel
-                        drives.add(UsbDrive(label, root, stats.first, stats.second))
+                        drives.add(UsbDrive(label, root, stats.first, stats.second, isUsb = !isInternal))
                     }
                 }
             }
         }
 
-        // 2. Scan unter /storage für gemountete Volumes (z.B. /storage/0000-0000)
+        // 2. Scan unter /storage für gemountete Volumes (z.B. /storage/XXXX-XXXX)
         val storageDir = File("/storage")
         if (storageDir.exists() && storageDir.isDirectory) {
             val list = storageDir.listFiles()
@@ -80,14 +99,18 @@ object FileUtils {
                     val name = f.name.lowercase(Locale.ROOT)
                     if (name == "self" || name == "knox" || name == "container") continue
 
+                    val isInternal = name == "emulated" || f.canonicalPath.contains("emulated", ignoreCase = true)
+                    if (isInternal && !includeInternal) {
+                        continue
+                    }
+
                     if (f.isDirectory && f.canRead()) {
                         val canonical = f.canonicalPath
                         if (foundPaths.add(canonical)) {
                             val stats = getStorageStats(f)
                             if (stats.first > 0L) {
-                                val isInternal = name == "emulated" || canonical.contains("emulated", ignoreCase = true)
                                 val label = if (isInternal) internalLabel else usbDefaultLabel
-                                drives.add(UsbDrive(label, f, stats.first, stats.second))
+                                drives.add(UsbDrive(label, f, stats.first, stats.second, isUsb = !isInternal))
                             }
                         }
                     }
@@ -95,22 +118,21 @@ object FileUtils {
             }
         }
 
-        // 3. Fallback für Emulator: Falls gar kein Wechselspeicher gemountet wurde
-        if (drives.isEmpty()) {
+        // 3. Fallback für Emulator NUR DANN, wenn interner Speicher explizit erlaubt ist
+        if (drives.isEmpty() && includeInternal) {
             val fallback = Environment.getExternalStorageDirectory()
             if (fallback != null && fallback.exists() && fallback.canRead()) {
                 val stats = getStorageStats(fallback)
-                drives.add(UsbDrive(internalLabel, fallback, stats.first, stats.second))
+                drives.add(UsbDrive(internalLabel, fallback, stats.first, stats.second, isUsb = false))
             }
         }
 
-        // 4. Feinschliff der USB-Labels:
-        // Ein einzelner Stick heißt schlicht "USB", bei mehreren Sticks wird nummeriert ("USB 1", "USB 2" etc.)
-        val usbCount = drives.count { it.label == usbDefaultLabel }
+        // 4. Feinschliff der USB-Labels ("USB", "USB 1", "USB 2" ...)
+        val usbCount = drives.count { it.isUsb }
         if (usbCount > 1) {
             var counter = 1
             return drives.map { drive ->
-                if (drive.label == usbDefaultLabel) {
+                if (drive.isUsb) {
                     val numberedLabel = context.getString(R.string.storage_usb_numbered, counter)
                     counter++
                     drive.copy(label = numberedLabel)

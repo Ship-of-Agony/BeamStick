@@ -19,6 +19,13 @@
     <string name="perm_btn_grant">Jetzt aktivieren</string>
     <string name="perm_btn_later">Später</string>
 
+    <!-- Overlay / Autostart Berechtigungsdialog -->
+    <string name="overlay_perm_title">Autostart-Berechtigung</string>
+    <string name="overlay_perm_msg">Damit BeamStick beim Einschalten des Beamers direkt starten kann, muss das Einblenden über anderen Apps erlaubt werden.</string>
+    <string name="overlay_perm_btn_settings">Zu den Einstellungen</string>
+    <string name="overlay_perm_btn_later">Später</string>
+    <string name="overlay_perm_error_toast">Einstellungen konnten nicht geöffnet werden.</string>
+
     <!-- Badges -->
     <string name="badge_folder">ORDNER</string>
     <string name="badge_video">VIDEO</string>
