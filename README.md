@@ -18,7 +18,7 @@
   </a>
 </p>
 
-# 🎬 BeamStick Launcher (v0.2)
+# 🎬 BeamStick Launcher (v0.3 Hotfix)
 
 **D-Pad-optimized Android TV & projector media bridge launcher for external storage.**  
 Developed by **Ship of Agony LABs**.
