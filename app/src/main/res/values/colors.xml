@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_main">#0E1116</color>
+    <color name="bg_card">#161A23</color>
+    <color name="bg_card_focused">#26334D</color>
+    <color name="accent_blue">#4E8CFF</color>
+
+    <color name="text_primary">#F0F3F8</color>
+    <color name="text_secondary">#8C97A8</color>
+
+    <!-- Media Category Badges -->
+    <color name="badge_folder">#D97706</color>
+    <color name="badge_video">#2563EB</color>
+    <color name="badge_audio">#059669</color>
+    <color name="badge_image">#7C3AED</color>
+    <color name="badge_other">#4B5563</color>
+</resources>

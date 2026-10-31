@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- USB Mass Storage Class: class 8 (0x08), subclass 6 (SCSI transparent), protocol 80 (Bulk-Only) -->
+    <usb-device class="8" subclass="6" protocol="80" />
+    <!-- Fallback für generische Mass Storage Interfaces -->
+    <usb-device class="8" />
+</resources>

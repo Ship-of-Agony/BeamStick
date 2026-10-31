@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">BeamStick</string>
+
+    <!-- Main Activity UI -->
+    <string name="no_usb_connected">Kein USB-Speicher verbunden</string>
+    <string name="waiting_for_usb">Warte auf USB-Speicher…</string>
+    <string name="btn_settings">Einstellungen</string>
+    <string name="insert_usb_hint">Bitte USB-Speichermedium einstecken…</string>
+    <string name="folder_empty">Ordner ist leer oder Zugriff verweigert.</string>
+    <string name="elements_count">%1$d Elemente</string>
+    <string name="storage_capacity_format">%1$s frei von %2$s (%3$d%%)</string>
+    <string name="storage_internal">Interner Speicher</string>
+    <string name="storage_usb">USB</string>
+    <string name="storage_usb_numbered">USB %d</string>
+
+    <!-- Permissions Dialog -->
+    <string name="perm_dialog_title">Dateizugriff erforderlich</string>
+    <string name="perm_dialog_msg">Um Videos oder Musik von deinem USB-Stick zu durchsuchen und abzuspielen, erteile bitte die Berechtigung \'Zugriff auf alle Dateien\'.</string>
+    <string name="perm_btn_grant">Jetzt aktivieren</string>
+    <string name="perm_btn_later">Später</string>
+
+    <!-- Badges -->
+    <string name="badge_folder">ORDNER</string>
+    <string name="badge_video">VIDEO</string>
+    <string name="badge_audio">AUDIO</string>
+    <string name="badge_image">BILD</string>
+    <string name="badge_file">DATEI</string>
+
+    <!-- Settings Dialog -->
+    <string name="settings_title">BeamStick Einstellungen</string>
+    <string name="settings_subtitle">USB-Autostart, Player und Beenden konfigurieren</string>
+    <string name="settings_btn_close">Schließen</string>
+    <string name="settings_btn_cancel">Abbrechen</string>
+
+    <string name="setting_autostart_title">USB-Autostart</string>
+    <string name="setting_autostart_sub">App automatisch starten, sobald ein USB-Stick eingesteckt wird</string>
+    <string name="status_on">EIN</string>
+    <string name="status_off">AUS</string>
+    <string name="status_active">✓ AKTIV</string>
+
+    <string name="setting_video_title">Standard Video-Player</string>
+    <string name="setting_video_sub">Wiedergabeverhalten für Videodateien festlegen</string>
+    <string name="setting_audio_title">Standard Audio-Player</string>
+    <string name="setting_audio_sub">Wiedergabeverhalten für Musik- und Hördateien festlegen</string>
+    <string name="setting_image_title">Standard Bild-Betrachter</string>
+    <string name="setting_image_sub">Verhalten für Fotos und Bilder festlegen</string>
+
+    <!-- Picker Options -->
+    <string name="picker_mode_ask_title">Öffnen mit… (Immer nachfragen)</string>
+    <string name="picker_mode_ask_sub">Jedes Mal die App-Auswahl anzeigen</string>
+
+    <string name="picker_installed_header">Immer öffnen mit:</string>
+    <string name="picker_no_apps_found">Keine passenden Player-Apps gefunden</string>
+
+    <string name="picker_reset_title">Standard zurücksetzen</string>
+    <string name="picker_reset_sub">Zugeordneten Player für diesen Medientyp entfernen</string>
+    <string name="picker_reset_value">ZURÜCKSETZEN</string>
+    <string name="picker_reset_done">Player-Einstellung zurückgesetzt.</string>
+
+    <!-- Reset All & Exit -->
+    <string name="setting_reset_title">Alle Einstellungen zurücksetzen</string>
+    <string name="setting_reset_sub">Alle Standard-Player löschen und Standardwerte wiederherstellen</string>
+    <string name="setting_reset_value">ALLES ZURÜCKSETZEN</string>
+    <string name="setting_reset_toast">Alle Einstellungen wurden zurückgesetzt.</string>
+
+    <string name="setting_exit_title">App beenden</string>
+    <string name="setting_exit_sub">BeamStick Launcher schließen und zum Beamer-Hauptmenü zurückkehren</string>
+    <string name="setting_exit_value">BEENDEN</string>
+
+    <string name="picker_select_app_sub">Aktion wählen oder Standard-App festlegen</string>
+    <string name="picker_action_open_title">%1$s öffnen</string>
+    <string name="picker_choice_once">Nur diesmal</string>
+    <string name="picker_choice_always">Immer</string>
+    <string name="picker_saved_toast">%1$s als Standard-Player festgelegt</string>
+
+    <string name="err_no_uri">Sichere Datei-URI konnte nicht erstellt werden</string>
+    <string name="err_no_player">Kein passender Player auf diesem Gerät installiert</string>
+
+    <string name="not_installed_hint">Nicht installiert – Zum Herunterladen klicken</string>
+    <string name="install_app_title">App nicht installiert</string>
+    <string name="install_app_msg">Möchtest du den Play Store öffnen, um %1$s zu installieren?</string>
+    <string name="btn_open_store">Play Store öffnen</string>
+
+    <!-- Media Info Dialog Labels -->
+    <string name="info_dialog_title">Mediendetails</string>
+    <string name="info_prop_file_size">Dateigröße</string>
+    <string name="info_prop_last_modified">Zuletzt geändert</string>
+    <string name="info_prop_extension">Dateiendung</string>
+    <string name="info_prop_resolution">Auflösung</string>
+    <string name="info_prop_duration">Dauer</string>
+    <string name="info_prop_bitrate">Bitrate</string>
+    <string name="info_prop_framerate">Bildwiederholrate</string>
+    <string name="info_prop_video_codec">Video-Codec</string>
+    <string name="info_prop_audio_codec">Audio-Codec</string>
+    <string name="info_prop_audio_channels">Audiokanäle</string>
+    <string name="info_prop_audio_samplerate">Abtastrate</string>
+    <string name="info_prop_subtitles">Untertitel</string>
+    <string name="info_prop_subtitles_none">Keine gefunden</string>
+    <string name="info_prop_rotation">Ausrichtung</string>
+    <string name="info_prop_mime_type">MIME-Typ</string>
+    <string name="info_prop_hdr">Farbraum / HDR</string>
+    <string name="info_prop_title">Titel</string>
+    <string name="info_prop_artist">Künstler</string>
+    <string name="info_prop_album">Album</string>
+    <string name="info_prop_audio_format">Audioformat</string>
+    <string name="info_prop_dimensions">Abmessungen</string>
+    <string name="info_prop_megapixels">Megapixel</string>
+    <string name="info_prop_format">Format</string>
+    <string name="info_prop_contains">Enthält</string>
+    <string name="info_duration_hours">%1$d:%2$02d:%3$02d Std.</string>
+    <string name="info_duration_minutes">%1$02d:%2$02d Min.</string>
+    <string name="info_items_count">%1$d Elemente</string>
+    <string name="info_metadata_unavailable">Nicht verfügbar</string>
+</resources>

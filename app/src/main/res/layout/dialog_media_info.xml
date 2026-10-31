@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_modern"
+    android:orientation="vertical"
+    android:padding="26dp">
+
+    <!-- Header mit Badge und Dateiname -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvInfoBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_tile_normal"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:textColor="#5B93FF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="AUDIO" />
+
+        <TextView
+            android:id="@+id/tvInfoTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="01 - Daytime (Vocal Radio Edit) - 4 Strings.mp3" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvInfoPath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="16dp"
+        android:ellipsize="start"
+        android:singleLine="true"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        tools:text="/storage/0000-0000/Music/track.mp3" />
+
+    <!-- ScrollView mit D-Pad-Unterstützung -->
+    <ScrollView
+        android:id="@+id/scrollInfoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:fadeScrollbars="false"
+        android:focusable="false"
+        android:scrollbarThumbVertical="@android:color/darker_gray"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:id="@+id/infoPropertiesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnInfoClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_tile_normal"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingVertical="12dp"
+        android:text="@string/settings_btn_close"
+        android:textAllCaps="false"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

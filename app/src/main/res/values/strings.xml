@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">BeamStick</string>
+
+    <!-- Main Activity UI -->
+    <string name="no_usb_connected">No USB storage connected</string>
+    <string name="waiting_for_usb">Waiting for USB storage…</string>
+    <string name="btn_settings">Settings</string>
+    <string name="insert_usb_hint">Please insert USB storage medium…</string>
+    <string name="folder_empty">Folder is empty or access denied.</string>
+    <string name="elements_count">%1$d items</string>
+    <string name="storage_capacity_format">%1$s free of %2$s (%3$d%%)</string>
+    <string name="storage_internal">Internal Storage</string>
+    <string name="storage_usb">USB</string>
+    <string name="storage_usb_numbered">USB %d</string>
+
+    <!-- Permissions Dialog -->
+    <string name="perm_dialog_title">File Access Required</string>
+    <string name="perm_dialog_msg">To browse and play videos or music from your USB stick, please grant the \'All files access\' permission.</string>
+    <string name="perm_btn_grant">Enable Now</string>
+    <string name="perm_btn_later">Later</string>
+
+    <!-- Badges -->
+    <string name="badge_folder">FOLDER</string>
+    <string name="badge_video">VIDEO</string>
+    <string name="badge_audio">AUDIO</string>
+    <string name="badge_image">IMAGE</string>
+    <string name="badge_file">FILE</string>
+
+    <!-- Settings Dialog -->
+    <string name="settings_title">BeamStick Settings</string>
+    <string name="settings_subtitle">Configure USB autostart, players, and exit options</string>
+    <string name="settings_btn_close">Close</string>
+    <string name="settings_btn_cancel">Cancel</string>
+
+    <string name="setting_autostart_title">USB Autostart</string>
+    <string name="setting_autostart_sub">Automatically launch the app when a USB stick is plugged in</string>
+    <string name="status_on">ON</string>
+    <string name="status_off">OFF</string>
+    <string name="status_active">✓ ACTIVE</string>
+
+    <string name="setting_video_title">Default Video Player</string>
+    <string name="setting_video_sub">Configure playback behavior for videos</string>
+    <string name="setting_audio_title">Default Audio Player</string>
+    <string name="setting_audio_sub">Configure playback behavior for audio files</string>
+    <string name="setting_image_title">Default Image Viewer</string>
+    <string name="setting_image_sub">Configure viewing behavior for pictures</string>
+
+    <!-- Picker Options -->
+    <string name="picker_mode_ask_title">Open with… (Always ask)</string>
+    <string name="picker_mode_ask_sub">Show app chooser every time a file is opened</string>
+
+    <string name="picker_installed_header">Always open with:</string>
+    <string name="picker_no_apps_found">No media player apps detected</string>
+
+    <string name="picker_reset_title">Reset Default</string>
+    <string name="picker_reset_sub">Clear assigned player for this media type</string>
+    <string name="picker_reset_value">RESET</string>
+    <string name="picker_reset_done">Player preference reset to default.</string>
+
+    <!-- Reset All & Exit -->
+    <string name="setting_reset_title">Reset All Settings</string>
+    <string name="setting_reset_sub">Clear all assigned players and restore defaults</string>
+    <string name="setting_reset_value">RESET ALL</string>
+    <string name="setting_reset_toast">All preferences restored to defaults.</string>
+
+    <string name="setting_exit_title">Exit App</string>
+    <string name="setting_exit_sub">Close BeamStick Launcher and return to Beamer Home</string>
+    <string name="setting_exit_value">EXIT</string>
+
+    <string name="picker_select_app_sub">Select an action or permanent default app</string>
+    <string name="picker_action_open_title">Open %1$s</string>
+    <string name="picker_choice_once">Just once</string>
+    <string name="picker_choice_always">Always</string>
+    <string name="picker_saved_toast">%1$s set as default player</string>
+
+    <string name="err_no_uri">Failed to create secure file URI</string>
+    <string name="err_no_player">No suitable player installed on this device</string>
+
+    <string name="not_installed_hint">Not installed – Click to download</string>
+    <string name="install_app_title">App not installed</string>
+    <string name="install_app_msg">Do you want to open the Play Store to install %1$s?</string>
+    <string name="btn_open_store">Open Store</string>
+
+    <!-- Media Info Dialog Labels -->
+    <string name="info_dialog_title">Media Details</string>
+    <string name="info_prop_file_size">File Size</string>
+    <string name="info_prop_last_modified">Last Modified</string>
+    <string name="info_prop_extension">Extension</string>
+    <string name="info_prop_resolution">Resolution</string>
+    <string name="info_prop_duration">Duration</string>
+    <string name="info_prop_bitrate">Bitrate</string>
+    <string name="info_prop_framerate">Framerate</string>
+    <string name="info_prop_video_codec">Video Codec</string>
+    <string name="info_prop_audio_codec">Audio Codec</string>
+    <string name="info_prop_audio_channels">Audio Channels</string>
+    <string name="info_prop_audio_samplerate">Sample Rate</string>
+    <string name="info_prop_subtitles">Subtitles</string>
+    <string name="info_prop_subtitles_none">None detected</string>
+    <string name="info_prop_rotation">Rotation</string>
+    <string name="info_prop_mime_type">MIME Type</string>
+    <string name="info_prop_hdr">Color / HDR</string>
+    <string name="info_prop_title">Title</string>
+    <string name="info_prop_artist">Artist</string>
+    <string name="info_prop_album">Album</string>
+    <string name="info_prop_audio_format">Audio Format</string>
+    <string name="info_prop_dimensions">Dimensions</string>
+    <string name="info_prop_megapixels">Megapixels</string>
+    <string name="info_prop_format">Format</string>
+    <string name="info_prop_contains">Contains</string>
+    <string name="info_duration_hours">%1$d:%2$02d:%3$02d hrs</string>
+    <string name="info_duration_minutes">%1$02d:%2$02d min</string>
+    <string name="info_items_count">%1$d items</string>
+    <string name="info_metadata_unavailable">Not available</string>
+</resources>
